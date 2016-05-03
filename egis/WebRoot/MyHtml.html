@@ -1,0 +1,49 @@
+<!DOCTYPE html>  
+<html lang='en'>  
+<head>  
+    <meta charset='utf-8'/>  
+    <title>访问Geoserver发布的地图</title> 
+    <link rel="stylesheet" href="css/ol.css" type="text/css"> 
+    <script type='text/javascript' src='js/ol.js'></script>  
+    <script type = 'text/javascript'>  
+        var map;  
+          
+        function init()  
+        {  
+            //定义地图边界  
+            var bounds= new OpenLayers.Bounds(75.98585510253906, 18.23404312133789,  
+             131.15216064453125, 50.426963806152344);  
+            var options = {  
+                projection: "EPSG:5921",                  
+                center: new OpenLayers.LonLat(-298076.34222, 4363638.73325),               
+            };  
+            map = new ol.layer.Vector('map_element',options);  
+            var wms = new OpenLayers.Layer.WMS("OpenLayers WMS",  
+                //geoserver所在服务器地址  
+                "http://localhost:8989/geoserver/china/wms",   
+                {  
+                    layers: "china:provience"  
+                });  
+            //添加wms图层  
+            map.addLayer(wms);    
+                      
+            //添加control空间  
+            map.addControl(new OpenLayers.Control.LayerSwitcher());  
+            map.addControl(new OpenLayers.Control.MousePosition());  
+            map.addControl(new OpenLayers.Control.ScaleLine());  
+            map.addControl(new OpenLayers.Control.Scale);             
+                                      
+            map.zoomToMaxExtent(bounds);              
+        }         
+                  
+          
+    </script>  
+</head>  
+  
+<body onload='init();'>  
+    <div style="position: absolute; top: 50px; left: 80px; width: 300px; height: 100px;">  
+        <div id='map_element' style='width:1200px;height:500px;'></div>  
+          
+    </div>  
+</body>  
+</html>  
