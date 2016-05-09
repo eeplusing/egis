@@ -1,0 +1,59 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+	<title>vectorDisplay.html</title>  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="../../lib/OpenLayers-2.13.1/OpenLayers.js" type="text/javascript"></script>
+    <script src="../../lib/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+</head>  
+<body>  
+<div id="mapBox" class="map" style="border: 1px solid red; width:800px;height:500px;"></div> 
+	<script type="text/javascript">  
+	   // var bounds= new OpenLayers.Bounds(-2602176.5, 2347015.25, 2115408.5, 6405411.5);
+	    var options = {  
+	    	//是否自动获取地图配置参数（maxExtent、MaxResolution、numZoomLevels以及TileLayer的
+	    	//tileOrigin和tileVersion），为true时自动获取，默认false。设置为true时不会显示没有数据的网格。
+	        isAutoConfig:true, 
+	       // projection: "EPSG:5921",                  
+            center: new OpenLayers.LonLat(100.5, 39.5), 
+	        //加载常用地图控件
+            controls: [
+	            //导航条，用于缩放地图显示级别
+	            new OpenLayers.Control.PanZoomBar(),
+	            //地图平移控件，添加后可以直接鼠标按下，移动地图
+	            new OpenLayers.Control.Navigation(),
+	            //显示鼠标当前位置的地理坐标
+	            new OpenLayers.Control.MousePosition(),
+	            new OpenLayers.Control.ScaleLine(),
+	            new OpenLayers.Control.Scale,
+	           new OpenLayers.Control.LayerSwitcher({})
+            ]
+	    };  
+         // 创建Map    
+         var map = new OpenLayers.Map('mapBox',options);    
+         //创建BaseLayer，并明确的在初始化时指出来. isBaseLayer:true     
+         var baseLayer = new OpenLayers.Layer.WMS(
+        	//图层在页面显示名称
+        	'vectorDisplay',
+        	//图层地址
+            'http://localhost:8989/geoserver/china/wms', 
+            //图层在geoserver中的
+            {layers:'provience'}
+         );   
+         var riverLayer = new OpenLayers.Layer.WMS(
+             	//图层在页面显示名称
+             	'vectorDisplay',
+             	//图层地址
+                 'http://localhost:8989/geoserver/china/wms', 
+                 //图层在geoserver中的
+                 {layers:'riverlayer'},
+                 {isBaseLayer:true}
+              );   
+         map.addLayers([baseLayer]);    
+         map.addLayers([riverLayer]);    
+         map.zoomTo(4);
+         //map.zoomToMaxExtent(bounds);  
+                     
+ </script>    
+</body>  
+</html> 
