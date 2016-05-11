@@ -23,6 +23,20 @@
         })
       });
       
+      //定义瓦片图层
+      var tiled = new ol.layer.Tile({
+    	  visible: false,
+    	  source: new ol.source.TileWMS({
+    		  url: 'http://localhost:8989/geoserver/china/wms',
+    		  params: {
+    			  'FORMAT': format,
+    			  'VERSION': '1.1.1',tiled: true,
+    			   STYLES: '',
+    			   LAYERS: 'china:riverlayer',
+    		  }
+          })
+      });
+      
       //定义坐标
       var projection = new ol.proj.Projection({
           code: 'EPSG:2380',
@@ -40,7 +54,8 @@
           target: 'map',
           //指定地图中的图层
           layers: [
-	          untiled
+	          untiled,
+	          tiled
           ],
           //投影视图设置
           view: new ol.View({
@@ -49,6 +64,9 @@
       });
       
       map.getView().fit(bounds, map.getSize());
+      
+      //添加全屏控件
+      map.addControl(new ol.control.FullScreen());
       
       //map对象绑定单击事件
       map.on('singleclick', function(evt){

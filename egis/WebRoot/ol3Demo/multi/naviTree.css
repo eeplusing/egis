@@ -120,21 +120,3 @@
             font-weight: bold;
             padding: .2em .2em;
         }
-        
-        #css_animation{
-        height:50px; 
-        width:50px;
-        border-radius: 25px; 
-        background: rgba(255, 0, 0, 0.9);
-
-        transform: scale(0);
-        animation: myfirst 2s;      
-        animation-iteration-count: infinite;
-    }
-
-    @keyframes myfirst{
-        to{
-            transform: scale(2);
-            background: rgba(0, 0, 0, 0);
-        }
-    }
