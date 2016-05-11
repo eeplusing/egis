@@ -1,0 +1,110 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+	<title>getLayerInfo.html</title>  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="../../lib/OpenLayers-2.13.1/OpenLayers.js" type="text/javascript"></script>
+    <script src="../../lib/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+	    var map = null;
+	    var wms_url = "http://localhost:8989/geoserver/wms?";
+    	var wms_layer = "china:provience";
+	    var wms_format = 'image/png';
+    	function init(){
+			var options = {  
+				//是否自动获取地图配置参数（maxExtent、MaxResolution、numZoomLevels以及TileLayer的
+				//tileOrigin和tileVersion），为true时自动获取，默认false。设置为true时不会显示没有数据的网格。
+				isAutoConfig:true, 
+				// projection: "EPSG:5921",
+				//图层加载的中心位置
+				center: new OpenLayers.LonLat(100.5, 39.5), 
+				//加载常用地图控件
+				controls: [
+					//导航条，用于缩放地图显示级别
+					new OpenLayers.Control.PanZoomBar(),
+					//地图平移控件，添加后可以直接鼠标按下，移动地图
+					new OpenLayers.Control.Navigation(),
+					//显示鼠标当前位置的地理坐标
+					new OpenLayers.Control.MousePosition(),
+					new OpenLayers.Control.ScaleLine(),
+					new OpenLayers.Control.Scale,
+					new OpenLayers.Control.LayerSwitcher({})
+				]
+			};  
+			
+			// 创建Map    
+			map = new OpenLayers.Map('map',options); 
+			
+			//创建BaseLayer，并明确的在初始化时指出来. isBaseLayer:true     
+			var baseLayer = new OpenLayers.Layer.WMS(
+				//图层在页面显示名称
+				'vectorDisplay',
+				//图层地址
+				'http://localhost:8989/geoserver/china/wms', 
+				//图层在geoserver中的
+				{layers:'provience'}
+			); 
+			
+			var riverLayer = new OpenLayers.Layer.WMS(
+				//图层在页面显示名称
+				'vectorDisplay',
+				//图层地址
+				'http://localhost:8989/geoserver/china/wms', 
+				//图层在geoserver中的
+				{layers:'riverlayer'},
+				//default就是true
+				{isBaseLayer:true}
+			);   
+			//将图层加到map中
+			map.addLayers([baseLayer,riverLayer]);  
+			//图层的放大级别
+			map.zoomTo(4);
+			//注册点击事件
+			map.events.register("click", map, onMapClick);
+			// 放大到全屏
+			//map.zoomToMaxExtent();
+    	}
+    	
+    	function onMapClick(e){
+    		var params = {
+	    		REQUEST:"GetFeatureInfo",                // WMS GetFeatureInfo        
+	    		BBOX:map.getExtent().toBBOX(),       // 地图的地图范围
+	    		WIDTH:map.size.w,                     // 地图的宽度
+	    		HEIGHT:map.size.h,                     // 地图高度
+	    		X:e.xy.x,                         // 屏幕坐标X
+	    		Y:e.xy.y,                         // 屏幕坐标X
+	    		QUERY_LAYERS:map.layers[0].params.LAYERS,    // 定义要查询的图层
+	    		INFO_FORMAT:"text/html",                    // GetFeatureInfo返回格式        
+	    		FEATURE_COUNT:50,                             // 最大返回的Feature个数
+	    		Layers:wms_layer,                      // WMS 图层列表
+	    		Styles:"",                             // 图层样式
+	    		format:"image/png",                     // 地图格式
+	    		EXCEPTIONS:"application/vnd.ogc.se_xml"     // Exception 类型
+    		};
+    		var headers = {"X-Requested-With":"XMLHttpRequest"};
+    		//alert(headers["X-Requested-With"]);
+    		//alert(params.WIDTH + "  " + params.X);
+    		//args0:请求地址 ;args1:请求参数:args2:    ;args3:完成处理函数;args4:失败处理函数
+    		//OpenLayers.Request.GET(wms_url, params, {}, onComplete, onFailure); 
+    		//OpenLayers.Request.GET(wms_url,params,onComplete); 
+    		OpenLayers.Request.GET(wms_url, true, null, null ,this, params,headers, onComplete, onFailure);
+    		OpenLayers.Event.stop(e);
+    		alert("I am here");
+    	}
+   		function onComplete(response){
+			alert(response.responseText);
+   			document.getElementById('click_response').innerHTML = response.responseText;
+   		}
+   		function onFailure(response){
+   			alert("onFailure");
+			document.getElementById('click_response').innerHTML = response.responseText;
+   		}
+	</script> 
+</head>  
+<body onload="init()">
+	<div style="margin:0 auto;border: 1px solid green;width:905px;height:605px;">
+		<div id="map" style="width:900px;height:600px;"></div> 
+	</div>
+	<div id="click_response"></div>
+</body>  
+</html> 

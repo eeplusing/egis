@@ -1,0 +1,461 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<title>demo1.html</title>  
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="../../lib/OpenLayers-2.13.1/OpenLayers.js" type="text/javascript"></script>
+<script src="../../lib/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var map, ctrlLyrSwitcher, measureControls;
+    var markers;
+    var wfs;
+    var field = 'Linetype'; //属性名
+    var val = 'DASHED';		//参数值
+    var flag = true;
+    function init() {
+    	format = 'image/png';
+        map = new OpenLayers.Map({
+            div: "map",
+            projection: "EPSG:4326",
+            displayProjection: new OpenLayers.Projection("EPSG:4326"),
+            numZoomLevels: 21,
+            layers: [
+    			new OpenLayers.Layer.WMS(
+                     "点",
+                     [
+                      "http://localhost:8080/geoserver/TJDG/wms"
+                     ],
+                     { layers: 'TJDG:point', transparent: true },
+                     { opacity: 0.8 }
+                     ),
+                new OpenLayers.Layer.XYZ(
+                     "tianditu",
+                     [
+                      //"http://t1.tianditu.cn/DataServer?T=img_c&X=${x}&Y=${y}&L=${z}"
+                      "http://t1.tianditu.cn/DataServer?T=cav_c&X=${x}&Y=${y}&L=${z}"
+                     ],
+                     {
+                     //wrapDateLine: true
+                 }
+                     ),
+                      new OpenLayers.Layer.XYZ(
+                     "天地图中文注记",
+                     [
+                      "http://t1.tianditu.cn/DataServer?T=cva_c&X=${x}&Y=${y}&L=${z}"
+                     ],
+                     {
+                         //wrapDateLine: true,
+                         isBaseLayer: false,
+                         visibility: false,
+                         displayInLayerSwitcher: false
+                     }
+                     ),
+                     new OpenLayers.Layer.XYZ(
+                     "天地图卫星图标注",
+                     [
+                      "http://t1.tianditu.cn/DataServer?T=cia_c&X=${x}&Y=${y}&L=${z}"
+                     ],
+                     {
+                         // wrapDateLine: true,
+                         isBaseLayer: false
+                     }
+                     ),	
+    								new OpenLayers.Layer.WMS(
+                     "管",
+                     [
+                      "http://localhost:8080/geoserver/TJDG/wms"
+                     ],
+                     { layers: 'TJDG:line', transparent: true },
+                     { opacity: 0.8 }
+                     ),	
+                     				new OpenLayers.Layer.WMS(
+                     "锅炉房",
+                     [
+                     "http://localhost:8080/geoserver/TJDG/wms"
+                     ],
+                     { layers: 'TJDG:GLF', transparent: true },
+                     { opacity: 0.8 }
+                     ),				new OpenLayers.Layer.WMS(
+                     "居民点",
+                     [
+                     "http://localhost:8080/geoserver/TJDG/wms"
+                     ],
+                     { layers: 'TJDG:jmd', transparent: true },
+                     { opacity: 0.8 }
+                     )		                          
+
+        ],
+            center: [117.47081, 38.72762],
+            zoom: 15
+        });
+      //*******************设置style**********************************
+        var myStyles = new OpenLayers.StyleMap({  
+            "default": new OpenLayers.Style({  
+                pointRadius: "${type}",  
+                fillColor: "#ffcc66",  
+                strokeColor: "#ff9933",  
+                strokeWith: 2,  
+                graphicZIndex:1  
+            }),  
+            "select": new OpenLayers.Style({  
+                fillColor: "#66ccff",  
+                strokeColor: "#3399ff",  
+                graphicZIndex: 2  
+            })  
+        });  
+        //*******************添加wfs服务**********************************
+        //http://localhost:8080/geoserver/TJDG/ows
+        wfs = new OpenLayers.Layer.Vector("WFS", {
+    						    	strategies: [new OpenLayers.Strategy.Fixed()],
+    						    	projection: new OpenLayers.Projection("EPSG:4326"),
+    						    	//styleMap: myStyles,  
+    						    	//styleMap: new OpenLayers.StyleMap({ externalGraphic: "../images/pic_left.png", graphicOpacity: 0.3, graphicWidth: 10, graphicHeight: 10 }), 
+    						    	protocol: new OpenLayers.Protocol.WFS({
+    						    	version : "1.0.0",
+    						    	url: "http://localhost:8080/geoserver/wfs",
+    						    	featureType: "line",
+    						    	featurePrefix : "TJDG",
+    						    	featureNS: "http://www.tjdg.com",
+    						    	srsName : "EPSG:4326",
+    						    	geometryName:"the_geom"
+    						    	})
+    						    	});
+        //map.addLayer(wfs);
+        //*******************对图层进行过滤*********************************
+    		    /*var filter = new OpenLayers.Filter.Comparison({
+    		        type : OpenLayers.Filter.Comparison.EQUAL_TO,
+    		        property : field,
+    		        value : val
+    		    });
+    		    map.addLayer(wfs);*/
+    		   
+        //*******************图层数据的过滤*********************************
+    		    /*var filter = new OpenLayers.Filter.Logical({
+    		    	type: OpenLayers.Filter.Logical.AND,
+    		    	filters: [
+    		    	new OpenLayers.Filter.Comparison({//比较操作符
+    		    	type: OpenLayers.Filter.Comparison.LIKE,
+    		    	property: field,
+    		    	value: "*"+ val +"*"
+    		    	})
+    		    	]
+    		    	});
+    		    var filter_1_0 = new OpenLayers.Format.Filter.v1_0_0(); 
+    		    var xml = new OpenLayers.Format.XML(); 
+    		    var xmlPara = ""
+    		    	+ ""
+    		    	+ "xmlns:wfs='http://www.opengis.net/wfs' "
+    		    	+ "xmlns:gml='http://www.opengis.net/gml' "
+    		    	+ "xmlns:ogc='http://www.opengis.net/ogc' "
+    		    	+ "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+    		    	+ "xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/wfs.xsd'>"
+    		    	+ ""
+    		    	                + field
+    		    	+ xml.write(filter_1_0.write(filter))
+    		    	                + ""
+    		    	+ "";
+    		    var request = OpenLayers.Request.POST( {
+    		    	url : "http://localhost:8080/geoserver/wfs?",
+    		    	data : xmlPara,
+    		    	callback : handler
+    		    	});
+    		    function handler(req){
+    		    	var xmlDoc = req.responseXML;
+    		    	//theNodes = xmlDoc.getElementsByTagName_r(field);
+    		    	//if(theNodes[0]==null){alert("未查到信息")} 
+    		    	var gml = "http://localhost:8080/geoserver/TJDG/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=TJDG:line&outputFormat=GML2&Handle=E218E";
+    		    	OpenLayers.loadURL(gml,'', this, caller);
+    		    	var gmlLayer = new OpenLayers.Layer.GML("GML",gml,{style:{fillColor: "red"}});
+    		    	map.addLayer(gmlLayer);
+    		    }
+    		    function caller(response){
+                    //document.getElementById('nodelist').innerHTML = response.responseText;
+    				//alert(response.responseText);
+    				//console.info(response.responseText);
+                };*/
+    	//*******************获得属性事件***********************************
+    	  map.events.register('click', map, function (e) {
+                        var params = {
+                            REQUEST: "GetFeatureInfo",
+                            EXCEPTIONS: "application/vnd.ogc.se_xml",
+                            BBOX: map.getExtent().toBBOX(),
+                            SERVICE: "WMS",
+                            INFO_FORMAT: 'application/vnd.ogc.gml',
+                            QUERY_LAYERS: map.layers[6].params.LAYERS,
+                            FEATURE_COUNT: 50,
+                            Layers: 'TJDG:jmd',
+                            WIDTH: map.size.w,
+                            HEIGHT: map.size.h,
+                            format: format,
+                            styles: map.layers[6].params.STYLES,
+                            srs: map.layers[6].params.SRS
+                            };
+                        
+                        // handle the wms 1.3 vs wms 1.1 madness
+                        if(map.layers[0].params.VERSION == "1.3.0") {
+                            params.version = "1.3.0";
+                            params.j = parseInt(e.xy.x);
+                            params.i = parseInt(e.xy.y);
+                        } else {
+                            params.version = "1.1.1";
+                            params.x = parseInt(e.xy.x);
+    						console.info(params.x);
+                            params.y = parseInt(e.xy.y);
+                        }					
+                        //OpenLayers.Request.GET("http://localhost:8080/geoserver/TJDG/wms", params, this, setHTML, setHTML);
+    					OpenLayers.loadURL("http://localhost:8080/geoserver/TJDG/wms", params, this, setHTML, setHTML);
+                        OpenLayers.Event.stop(e);
+                    });
+    			function setHTML(response){
+                    //document.getElementById('nodelist').innerHTML = response.responseText;
+    				//alert(response.responseText);
+    				var gmlParse = new OpenLayers.Format.GML();
+    				var features = gmlParse.read(response.responseText);
+    				var icon = new OpenLayers.Icon("pic_left.png");
+    				var feature, lonlat, marker;
+    			    var attributes = [];
+    			    for (var feat in features) {
+    			    	feature = features[feat]; 
+    			    	switch (feature.geometry.CLASS_NAME) {
+    		            case "OpenLayers.Geometry.MultiPolygon":
+    		                {
+    		                    var polygon = feature.geometry.components[0].clone();
+    		                    var vec = new OpenLayers.Feature.Vector(polygon);
+    		                    wfs.addFeatures([vec]);
+    		                }
+    		                break;
+    		            case "OpenLayers.Geometry.Point":
+    		                {
+    		                    //经度纬度是相反的，所以需要重新构建
+    		                    var pt = feature.geometry.clone();
+    		                    var vec = new OpenLayers.Feature.Vector(pt);
+    		                    wfs.addFeatures([vec]);
+    		                }
+    		                break;
+    		        }
+    			    alert(feature.attributes["Shape_Area"]);
+    		        attributes.push(feature.attributes);
+    			    }
+                };
+        //*******************加载图层控制器*********************************  
+        ctrlLyrSwitcher = new OpenLayers.Control.LayerSwitcher();
+        map.addControl(ctrlLyrSwitcher);
+        map.addControl(new OpenLayers.Control.MousePosition());
+        //*******************加载图层控制器*********************************  
+
+        //加载覆盖物对象
+        markers = new OpenLayers.Layer.Markers("Markers");
+        map.addLayer(markers);
+
+        // 注册map点击事件  
+        map.events.register("click", map, onMapClick);
+
+        //*******************设置测距，测面积的线和多边形的颜色*********************************  
+        var sketchSymbolizers = {
+            "Point": {
+                pointRadius: 4,
+                graphicName: "square",
+                fillColor: "white",
+                fillOpacity: 1,
+                strokeWidth: 1,
+                strokeOpacity: 1,
+                strokeColor: "#333333"
+            },
+            "Line": {
+                strokeWidth: 3,
+                strokeOpacity: 1,
+                strokeColor: "#B00000",
+                strokeDashstyle: "dash"
+            },
+            "Polygon": {
+                strokeWidth: 2,
+                strokeOpacity: 1,
+                strokeColor: "#B00000",
+                fillColor: "red",
+                fillOpacity: 0.3
+            }
+        };
+        var style = new OpenLayers.Style();
+        style.addRules([
+                    new OpenLayers.Rule({ symbolizer: sketchSymbolizers })
+                ]);
+        var styleMap = new OpenLayers.StyleMap({ "default": style });
+
+        // allow testing of specific renderers via "?renderer=Canvas", etc  
+        var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+        renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+        measureControls = {
+            line: new OpenLayers.Control.Measure(
+                        OpenLayers.Handler.Path, {
+                            persist: true,
+                            handlerOptions: {
+                                layerOptions: {
+                                    renderers: renderer,
+                                    styleMap: styleMap
+                                }
+                            }
+                        }
+                    ),
+            polygon: new OpenLayers.Control.Measure(
+                        OpenLayers.Handler.Polygon, {
+                            persist: true,
+                            handlerOptions: {
+                                layerOptions: {
+                                    renderers: renderer,
+                                    styleMap: styleMap
+                                }
+                            }
+                        }
+                    )
+        };
+
+        var control;
+        for (var key in measureControls) {
+            control = measureControls[key];
+            control.events.on({
+                "measure": handleMeasurements,
+                "measurepartial": handleMeasurements
+            });
+            map.addControl(control);
+        }
+        //*******************设置测距，测面积的线和多边形的颜色********************************* 
+
+
+        //map.events.register("changebaselayer", map, function (soso) { updateLayerVisibility(soso) });
+    }
+    OpenLayers.Util.onImageLoadError = function () {
+        this.src = "http://www.openlayers.cn/olapi/img/blank.gif";
+        //return "http://www.openlayers.cn/olapi/img/blank.gif";
+    };
+    function updateLayerVisibility(soso) {
+        if (soso.layer.name == "tianditu") {
+            map.layers[3].setVisibility(false);
+            map.layers[3].displayInLayerSwitcher = false;
+            map.layers[2].setVisibility(true);
+            map.layers[2].displayInLayerSwitcher = true;
+        }
+        else {
+            map.layers[2].displayInLayerSwitcher = false;
+            map.layers[2].setVisibility(false);
+            map.layers[3].displayInLayerSwitcher = true;
+            map.layers[3].setVisibility(true);
+        }
+        ctrlLyrSwitcher.layerStates = [];
+        ctrlLyrSwitcher.redraw();
+    }
+    var isload = true;
+    //过滤
+    function filterAttr(){
+    	if(flag){
+    		var filter = new OpenLayers.Filter.Comparison({
+    	        type : OpenLayers.Filter.Comparison.EQUAL_TO,
+    	        property : field,
+    	        value : val
+    	    });
+    	    wfs.filter = filter;
+    	    if(isload){
+    	    	map.addLayer(wfs);
+    	    	isload = false;
+    	    }
+    	    flag = false;
+    	}else{
+    		 wfs.filter = "";
+    		 flag = true;
+    	}	
+        wfs.refresh();
+    }
+
+    //放大  
+    function zoomIn() {
+        map.zoomIn();
+    }
+    //缩小  
+    function zoomOut() {
+        map.zoomOut();
+    }
+    //获取地图数据  
+    function getSize() {
+        alert(map.getSize() + ",高度为=" + map.getSize().h);
+    }
+    function toggleControl(_value) {
+        for (key in measureControls) {
+            var control = measureControls[key];
+            if (_value == key) {
+                control.activate();
+            } else {
+                control.deactivate();
+            }
+        }
+    }
+    //测距、面积  
+    function handleMeasurements(event) {
+        var geometry = event.geometry;
+        var units = event.units;
+        var order = event.order;
+        var measure = event.measure;
+        var out = "";
+        if (order == 1) {
+            out += "距离: " + measure.toFixed(3) + " " + units;
+        } else {
+            out += "面积: " + measure.toFixed(3) + " " + units + "2";
+        }
+        $(".div_bar").text(out);
+    }
+    //点击事件
+    function onMapClick(e) {
+        //alert('click');  
+        // 显示地图屏幕坐标  
+        var str = "[Screen]:" + e.xy.x + "," + e.xy.y;
+        //document.getElementById("screen_xy").innerHTML = str;
+        // 屏幕坐标向地图坐标的转换  
+        var lonlat = map.getLonLatFromViewPortPx(e.xy);
+        str = "[Map]:" + lonlat.lon + "," + lonlat.lat;
+        //document.getElementById("location").innerHTML = str;
+        //alert(str);
+        //生成点图层  
+    }
+
+    //往地图添加标注
+    var MarkerList = new Array();
+    function addMarker(X,Y,W,H,url) {
+        var url = url;
+        var sz = new OpenLayers.Size(W, H);  //尺寸大小
+        var calculateOffset = function (size) {
+            return new OpenLayers.Pixel(-(size.w / 2), -size.h);
+        };
+        var icon = new OpenLayers.Icon(url, sz, null, calculateOffset);
+        var marker1 = new OpenLayers.Marker(new OpenLayers.LonLat(X, Y), icon);
+        var markerClick = function (evt) {
+            var html = "<b>  11<br>  当前人数：11人</b>";
+            popup1 = new OpenLayers.Popup("popup1",
+                                    new OpenLayers.LonLat(X, Y),
+                                    new OpenLayers.Size(200, 50),
+                                    html,
+                                    false);
+            popup1.setBackgroundColor("#ffffff");
+            popup1.setOpacity(12);
+            popup1.setBorder("1px solid #d91f12");
+            map.addPopup(popup1);
+            var lonlat = map.getLonLatFromViewPortPx(evt);
+            console.log(lonlat);
+            console.log(this);
+        };
+        markers.events.register("mousedown", marker1, markerClick);
+        markers.addMarker(marker1);
+        MarkerList[MarkerList.length] = marker1;
+    }
+    //清除标注
+    function ClearMark() {
+        for (var i = 0; i < MarkerList.length; i++) {
+            markers.removeMarker(MarkerList[i]);
+        }  
+    }
+</script> 
+</head>  
+<body onload="init()">
+<div style="margin:0 auto;border: 1px solid green;width:905px;height:605px;">
+	<div id="mapBox" style="width:900px;height:600px;"></div> 
+</div>
+	   
+</body>  
+</html> 
