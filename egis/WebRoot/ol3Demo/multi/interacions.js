@@ -35,16 +35,18 @@ var pureCoverage = false;
       //定义矢量图层
       var untiled = new ol.layer.Vector({
         source: vectorSource
+        
       });
       
       //定义瓦片图层
       var tiled = new ol.layer.Tile({
-    	  visible: false,
+    	  visible: true,
     	  source: new ol.source.TileWMS({
     		  url: 'http://localhost:8989/geoserver/china/wms',
     		  params: {
     			  'FORMAT': format,
-    			  'VERSION': '1.1.1',tiled: true,
+    			  'VERSION': '1.1.0',
+    			  'tiled': true,
     			  'STYLES': '',
  			      'LAYERS': 'china:provience',
     		  }
@@ -68,8 +70,10 @@ var pureCoverage = false;
           target: 'map',
           //指定地图中的图层
           layers: [
-	          untiled
+	          untiled,
+	          tiled
           ],
+         // renderer: 'canvas',
           //投影视图设置
           view: new ol.View({
 	           projection: projection
@@ -77,27 +81,50 @@ var pureCoverage = false;
       });
       
       
-   // 初始化交互
-      var selectInteraction = new ol.interaction.Select({
-          condition: ol.events.condition.never
+      
+      // a normal select interaction to handle click
+      var select = new ol.interaction.Select();
+      map.addInteraction(select);
+      var selectedFeatures = select.getFeatures();
+
+      // a DragBox interaction used to select features by drawing boxes
+      var dragBox = new ol.interaction.DragBox({
+    	  //按下shift键
+    	  condition: ol.events.condition.shiftKeyOnly,
+    	  style: new ol.style.Style({ 
+    		  stroke: new ol.style.Stroke({
+    			  color: [255, 196, 85, 1]
+    		  })
+    	  })
       });
-      var dragBoxInteraction = new ol.interaction.DragBox({
-          style: new ol.style.Style({
-              stroke: new ol.style.Stroke({
-                  color: [250, 25, 25, 1]
-              })
-          })
+      map.addInteraction(dragBox);
+
+      var infoBox = document.getElementById('info');
+
+      dragBox.on('boxend', function(e) {
+        // features that intersect the box are added to the collection of
+        // selected features, and their names are displayed in the "info"
+        // div
+        var info = [];
+        var extent = dragBox.getGeometry().getExtent();
+        vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
+          selectedFeatures.push(feature);
+          info.push("名称：" + feature.get('name') + ";面积：" + feature.get('dzm') + "<br>");
+        }); 
+        if (info.length > 0) {
+          infoBox.innerHTML = info.join(', ');
+        }
       });
-      dragBoxInteraction.on('boxend', function(event) {
-          var selectedFeatures = selectInteraction.getFeatures();
-          selectedFeatures.clear();
-          var extent = dragBoxInteraction.getGeometry().getExtent();
-          untiled.getSource().forEachFeatureIntersectingExtent(extent, function(feature) {
-              selectedFeatures.push(feature);
-          });
+
+      // clear selection when drawing a new box and when clicking on the map
+      dragBox.on('boxstart', function(e) {
+        selectedFeatures.clear();
+        infoBox.innerHTML = '&nbsp;';
       });
-      map.addInteraction(selectInteraction);
-      map.addInteraction(dragBoxInteraction);
+      map.on('click', function() {
+        selectedFeatures.clear();
+        infoBox.innerHTML = '&nbsp;';
+      });
       
       //为map绑定事件响应方法
       map.getView().on('change:resolution', function(evt){
@@ -247,3 +274,13 @@ var pureCoverage = false;
             }
         	map.updateSize();
         }
+        
+        var point_div = document.createElement("div");
+        point_div.setAttribute("id", "css_animation");
+        var point_overlay = new ol.Overlay({
+            element: point_div,
+            positioning: 'center-center'
+        });
+        map.addOverlay(point_overlay);
+        point_overlay.setPosition([350000,4160000]);
+
