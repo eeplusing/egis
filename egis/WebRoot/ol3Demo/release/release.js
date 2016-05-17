@@ -81,6 +81,18 @@
       
       //map对象绑定单击事件
       map.on('singleclick', function(evt){
+    	  //单击地图时将鼠标点击文职设为视图中心Start
+    	  var animation = ol.animation.pan({
+          	source:map.getView().getCenter(),
+          	easing:ol.easing.inAndOut
+          });
+          //在渲染中加入动画
+          map.beforeRender(animation);
+          //将鼠标点击位置设为当前视图中心
+          map.getView().setCenter(evt.coordinate);
+          //单击地图时将鼠标点击文职设为视图中心End
+          
+          
     	  document.getElementById('nodelist').innerHTML = "Loading... please wait...";
     	  var view = map.getView();
     	  var viewResolution = view.getResolution();
@@ -183,15 +195,16 @@
       /******************点击查询Start********************/
     //定义叠加层 Overlay
       var overlay = new ol.Overlay({
-          element: $('<div id="myOverlay" class="overlay">要素信息: <span id="coordinate" class="label label-primary">0, 0</span></div> '),
+          element: $('<div id="myOverlay" class="overlay"><span id="coordinate" class="label label-primary">0, 0</span></div> '),
           positioning: 'top-right',
           stopEvent: true,
           insertFirst: false
       });
       map.addOverlay(overlay);
       
-      //前面以为map绑定过click事件,这里又再次绑定，说明可以绑定多个方法
+    //前面以为map绑定过click事件,这里又再次绑定，说明可以绑定多个方法
       map.on('click', function(event){
+    	  $('#coordinate').text("");
           var coordinate = event.coordinate;
           //Set position
           overlay.setPosition(coordinate);
@@ -204,7 +217,7 @@
       selectClick.on('select', function() {
     	  var pointExtentFeatures = selectClick.getFeatures().pop();
     	  // Update overlay label
-          $('#coordinate').text("名称：" + pointExtentFeatures.get('name') + 
+          $('#coordinate').text("要素信息@名称：" + pointExtentFeatures.get('name') + 
         		  ",面积 ：" + pointExtentFeatures.get('dzm'));
           // Show overlay
           $(overlay.getElement()).show(); 
