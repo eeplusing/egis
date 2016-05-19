@@ -20,16 +20,38 @@ jQuery(function($){
 			content: 
 				'<div class="ibar_plugin_content">' + 
 					'<div class="ibar_cart_group ibar_cart_product"> ' + 
-						'<div class="ibar_cart_group_header"> ' + 
-							'<span class="ibar_cart_group_title">信息查询</span> ' + 
-							'<a href="#">详细信息</a>' + 
+						'<div class=""> ' + 
+							'<span class="ibar_cart_group_title">查询图层:</span><br/> ' + 
+							'<select>' + 
+						  		'<option>行政区域</option>' +
+						  		'<option>道路</option>' +
+						  		'<option>宗地</option>' +
+						  		'<option>楼盘</option>' +
+						  		'<option></option>' +
+						  		'<option></option>' +
+						  	'<select/>' + 
+						'</div><br/>' +  
+						'<div class=""> ' + 
+							'<span class="ibar_cart_group_title">查询条件1</span> ' + 
+							'<input type="text"/>' + 
+						'</div>' +  
+						'<div class=""> ' + 
+							'<span class="ibar_cart_group_title">查询条件2</span> ' + 
+							'<input type="text"/>' + 
+						'</div>' + 
+						'<div class=""> ' + 
+							'<span class="ibar_cart_group_title">查询条件3</span> ' + 
+							'<input type="text"/>' + 
+						'</div><br/>' +  
+						'<div class=""> ' + 
+							'<input type="button" value="查询"/>' + 
 						'</div>' +  
 						'<ul>' + 
 							'<li class="cart_item">' +  
 								'<div class="cart_item_desc">' + 
-									'<a href="#" class="cart_item_name">图层信息</a>' + 
+									'<a href="#" class="cart_item_name">查询结果</a>' + 
 									'<div class="cart_item_sku">' + 
-										'<span>显示详细信息</span>' + 
+										'<span>此处显示选中要的详细信息</span>' + 
 									'</div>' +
 								'</div>' + 
 							'</li>' + 
@@ -44,20 +66,15 @@ jQuery(function($){
 			content: 
 				'<div class="ibar_plugin_content">' + 
 					'<div class="ibar_cart_group ibar_cart_product"> ' + 
-						'<div class="ibar_cart_group_header"> ' + 
-							'<span class="ibar_cart_group_title">信息查询</span> ' + 
-							'<a href="#">详细信息</a>' + 
-						'</div>' +  
-						'<ul>' + 
-							'<li class="cart_item">' +  
-								'<div class="cart_item_desc">' + 
-									'<a href="#" class="cart_item_name">图层信息</a>' + 
-									'<div class="cart_item_sku">' + 
-										'<span>显示详细信息</span>' + 
-									'</div>' +
-								'</div>' + 
-							'</li>' + 
-						'</ul>' + 
+						'<div class="">测量距离<br/>' + 
+							'<img class="measureBtn" src="../../lib/images/length.png" title="测量距离" />' + 
+						'</div><br/>' +  
+						'<div class="">测量面积 <br/>' + 
+							'<img class="measureBtn" src="../../lib/images/area.png" title="测量面积"/>' +  
+						'</div><br/>' +  
+						'<div class="">测量周长<br/> ' + 
+							'<img class="measureBtn" src="../../lib/images/perimeter.png" title="测量周长"/>' +  
+						'</div><br/>' +  
 					'</div>',
 			init:$.noop
 		},

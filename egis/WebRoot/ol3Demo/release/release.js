@@ -75,7 +75,10 @@
 	      })
       });
       map.getView().fit(bounds, map.getSize());
-      
+      //添加鹰眼总览图控件
+      map.addControl( new ol.control.OverviewMap({
+          collapsed: false
+      }));
       //添加全屏控件
       map.addControl(new ol.control.FullScreen());
       

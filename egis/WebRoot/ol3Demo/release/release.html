@@ -25,7 +25,7 @@
 	<link rel="stylesheet" href="release.css">
   </head>
   <body>
-  	<div class="main" style="width:96%;height:100%; border:1px solid #F00;">
+  	<div class="main" style="width:96%;height:100%; border:0px solid #F00;">
     	<div style="width:85%; height:70%;">
     		<div id="map" style="width:100%; height:100%;"></div>
     	</div>
@@ -100,31 +100,7 @@
         </div>
     </div>
     <!--[if lte IE 8]>
-<script src="js/ieBetter.js"></script>
-<![endif]-->
-    <script type="text/javascript" src="js/parabola.js"></script>
-    <script type="text/javascript">
-        $(".quick_links_panel li").mouseenter(function () {
-            $(this).children(".mp_tooltip").animate({ left: -92, queue: true });
-            $(this).children(".mp_tooltip").css("visibility", "visible");
-            $(this).children(".ibar_login_box").css("display", "block");
-        });
-        $(".quick_links_panel li").mouseleave(function () {
-            $(this).children(".mp_tooltip").css("visibility", "hidden");
-            $(this).children(".mp_tooltip").animate({ left: -121, queue: true });
-            $(this).children(".ibar_login_box").css("display", "none");
-        });
-        $(".quick_toggle li").mouseover(function () {
-            $(this).children(".mp_qrcode").show();
-        });
-        $(".quick_toggle li").mouseleave(function () {
-            $(this).children(".mp_qrcode").hide();
-        });
-    </script>
-  	
-    
-    
-    
+
     
     <!-- 当前页的js：
     	地图的主要操作均在此js中定义
