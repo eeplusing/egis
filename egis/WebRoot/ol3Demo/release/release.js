@@ -144,7 +144,17 @@
 
       /******************交互矩形框选查询Start********************/
       // a normal select interaction to handle click
-      var select = new ol.interaction.Select();
+      var select = new ol.interaction.Select({
+    	  style: new ol.style.Style({
+  			stroke: new ol.style.Stroke({
+  				color: '#FFB900',
+  				width: 1
+  			}),
+  			fill: new ol.style.Fill({  
+                  color: '#E84850'  
+              })  
+  		})
+      });
       map.addInteraction(select);
       var selectedFeatures = select.getFeatures();
       
