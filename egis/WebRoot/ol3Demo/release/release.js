@@ -74,7 +74,9 @@
 	           projection: projection
 	      })
       });
+      //地图自适应bounds
       map.getView().fit(bounds, map.getSize());
+      
       //添加鹰眼总览图控件
       map.addControl( new ol.control.OverviewMap({
           collapsed: false
@@ -84,16 +86,16 @@
       
       //map对象绑定单击事件
       map.on('singleclick', function(evt){
-    	  //单击地图时将鼠标点击文职设为视图中心Start
-    	  var animation = ol.animation.pan({
+    	  /**单击地图时将鼠标点击文职设为视图中心Start**/
+    	 /* var animation = ol.animation.pan({
           	source:map.getView().getCenter(),
           	easing:ol.easing.inAndOut
           });
           //在渲染中加入动画
           map.beforeRender(animation);
           //将鼠标点击位置设为当前视图中心
-          map.getView().setCenter(evt.coordinate);
-          //单击地图时将鼠标点击文职设为视图中心End
+          map.getView().setCenter(evt.coordinate);*/
+          /**单击地图时将鼠标点击文职设为视图中心End**/
           
           
     	  document.getElementById('nodelist').innerHTML = "Loading... please wait...";

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>综合1</title>
+    <!-- bootstrap的css -->
+	<script src="../../lib/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+	<script src="../../lib/ol3.10.1/ol.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="../../lib/ol3.10.1/ol.css" type="text/css">
+	<link type="text/css" rel="stylesheet" href="../../lib/bootstrap3.3.5/bootstrap.min.css" />
+    <script src="../../lib/jqueryEasyui/jquery.easyui.min.js" type="text/javascript"></script>
+	<link href="../../lib/jqueryEasyui/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/jqueryEasyui/icon.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/jqueryEasyui/color.css" rel="stylesheet" type="text/css" />
+	<!-- 当前页的css -->
+	<link rel="stylesheet" href="release1.css">
+  </head>
+  <body>
+	<div  class="easyui-window" data-options="title:'工具箱',iconCls:'icon-searchTitle',maximizable:false,minimizable:false,closed:false,border:false,resizable:false,closable:false"  style="width: 300px; height: 450px;padding:5px;left:73%;top:12px;">
+      <div class="easyui-layout" data-options="fit:true">
+      	<div id="toolBar">
+      		<input id = "searchInfo" class="unactiveBtn"  type="button" value="信息查询"/>
+      		<input id = "measure" class="unactiveBtn" type="button" value="测量工具"/>
+      		<input id = "edit" class="unactiveBtn" type="button" value="地图编辑"/>
+      		<input id = "help" class="unactiveBtn" type="button" value="帮助"/>
+      	</div>
+        <!--信息查询--> 
+        <div id="searchInfoBoxCpp" class="cpp-tools" style="display:block;">
+	        <br/>
+			 图层：
+			<select id="layerList">
+				<option>楼盘</option>
+				<option>宗地</option>
+				<option>林地</option>
+				<option>湖海</option>
+				<option>宗地</option>
+			</select><br/><br/>
+			<input type="button" value="点查询"/><br/><br/>
+			<input type="button" value="线查询"/><br/><br/>
+			<input type="button" value="矩形查询"/><br/><br/>
+        </div>                   
+		<!--测量工具-->
+		<div id="measureBoxCpp" class="cpp-tools" style="display:none;">
+			<input type="button" value="测量面积"/><br/><br/>
+			<input type="button" value="测量周长"/><br/><br/>
+			<input type="button" value="测量距离"/><br/><br/>
+        </div>
+		<!--地图编辑-->
+		<div id="editBoxCpp" class="cpp-tools" style="display:none;">
+        	<br/>
+			 选择图层：
+			<select id="layerList">
+				<option>楼盘</option>
+				<option>宗地</option>
+				<option>林地</option>
+				<option>湖海</option>
+				<option>宗地</option>
+			</select><br/><br/>
+			<input type="button" value="添加"/><br/><br/>
+			<input type="button" value="删除"/><br/><br/>
+			<input type="button" value="修改"/><br/><br/>
+        </div>
+		<!--帮助-->
+		<div id="helpBoxCpp" class="cpp-tools" style="display:none;">
+        	<h3>使用说明</h3>
+        	<h3>使用说明</h3>
+        	<h3>使用说明</h3>
+        	<h3>使用说明</h3>
+        	<h3>使用说明</h3>
+        	<h3>使用说明</h3>
+        </div>
+     </div>
+   </div>
+      
+	
+  	<div id="map" class="map"></div>
+  	<div id="popup" class="ol-popup">
+		<div id="popup-closer" class="ol-popup-closer"><i class="mdi-navigation-close"></i></div>
+		<div>status</div>
+		<div id="popup-status">n/a</div>
+		<div>tienda</div>
+		<div id="popup-tiendas">n/a</div>
+	</div>
+  
+  	 <div id="wrapper">
+	        <div id="location"></div>
+	        <div id="scale"></div>
+	    </div>
+	    <div id="info" class="alert alert-success"></div>
+    
+    <!-- 当前页的js：
+    	地图的主要操作均在此js中定义
+     -->
+    <script src="release1.js" type="text/javascript"></script>
+  </body>
+</html>
