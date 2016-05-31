@@ -1,0 +1,54 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="../../lib/bootstrap3.3.5/bootstrap.min.css">
+	<script src="../../lib/js/jquery-2.1.1.min.js" type="text/javascript"></script>
+	<script src="../../lib/bootstrap3.3.5/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../../lib/ol3.10.1/ol.css" type="text/css">
+	<script src="../../lib/ol3.10.1/ol.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="modify1.css">
+    <title>编辑1</title>
+  </head>
+  <body>
+  	<div style="width:1100px; height:450px; float:left;">
+    	<div id="map" style="width:1000px; height:450px; border:1px solid #F00;">
+    	</div>
+  	</div>
+  	<div id="popup" class="ol-popup">
+		<div id="popup-closer" class="ol-popup-closer"><i class="mdi-navigation-close"></i></div>
+		<div>status</div>
+		<div id="popup-status">n/a</div>
+		<div>tienda</div>
+		<div id="popup-tiendas">n/a</div>
+	</div>
+    <div style="width:1000px; float:left; border:1px solid #F00;">
+    	<label>选择图层：</label>  
+        <select id="type">  
+            <option value="Point">点图层</option>  
+            <option value="LineString">线图层</option>  
+            <option value="Polygon">区图层</option>  
+           <!--  <option value="Circle">圆形</option>  
+            <option value="LinearRing">线性环</option>  
+            <option value="MultiLineString">多线</option>  
+            <option value="MultiPoint">复杂点</option>  
+            <option value="MultiPolygon">复杂多边形</option>   -->
+        </select>  
+        <div>
+	        <input id="stopOperate" class="btnMenu" type="button" value="停止编辑"/>
+	        <input id="btnSelect" class="btnMenu" type="button" value="选择"/>
+	        <input id="btnEdit" class="btnMenu" type="button" value="编辑"/>
+	        <input id="btnDrawPoint" class="btnMenu" type="button" value="绘制点"/>
+	        <input id="btnDrawLine" class="btnMenu" type="button" value="绘制线"/>
+	        <input id="btnDrawPoly" class="btnMenu" type="button" value="绘制多边形"/>
+	        <input id="btnDelete" class="btnMenu" type="button" value="删除"/>
+	        <input id="btnZoomIn" class="btnMenu" type="button" value="缩小"/>
+	        <input id="btnZoomOut" class="btnMenu" type="button" value="放大"/>
+        </div>
+    </div>
+    
+    <script src="modify1.js" type="text/javascript"></script>
+    
+  </body>
+</html>

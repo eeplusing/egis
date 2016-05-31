@@ -1,0 +1,87 @@
+.map:-moz-full-screen {
+	height: 90%;
+}
+.map:-webkit-full-screen {
+	height: 100%;
+}
+.map:fullscreen{
+	height: 100%;
+}
+.ol-overviewmap{
+	left:.5em;
+	bottom:5.5em
+}
+
+.ol-zoom{
+     bottom: 60px;
+}
+
+body {
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+ #map{
+     clear: both;
+     position: relative;
+     border: 0px solid #F00;
+}
+     
+/*定位动画*/
+#css_animation{
+      height:50px; 
+      width:50px;
+      border-radius: 25px; 
+      background: #E82030;
+      transform: scale(0);
+      animation: myfirst 2s;      
+      animation-iteration-count: infinite;
+}
+@keyframes myfirst{
+    to{
+        transform: scale(1);
+        background: rgba(0, 0, 0, 0);
+    }
+}
+  
+#searchBox{
+   	border:0px solid #F00;
+   	width:275px;
+   	height:40px;
+   	background-color:#E4EDFE; 
+}
+    
+#searchContent{
+  	width:200px;
+  	height:30px;
+	margin-top:5px;
+  	margin-left:5px;
+  	font-size:14px;
+  	border:none;
+}
+  
+   #searchBtn{
+   	width:50px;
+  	height:30px;
+  	margin-top:4px;
+  	float:right;
+  	margin-right:5px;
+  	border:none;
+  }
+
+
+#toolBar input{
+	width:65px;
+	height:30px;
+	border:none;
+	font-size:12px; 
+	font-weight:bolder;
+	color:#4166A4;
+}
+
+.unactiveBtn{
+	background-color:#D9E5FD;
+}
+.activeBtn{
+	background-color:#8DF0FF;
+}
+    
