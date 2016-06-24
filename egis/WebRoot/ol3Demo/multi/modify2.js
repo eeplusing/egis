@@ -19,7 +19,7 @@ var sourceVector = new ol.source.Vector({
 	format: new ol.format.GeoJSON(),
     loader: function(extent, resolution, projection) {
   	  //在geoserver平台预览中，选中GeoJSON格式，复制产生的链接
-    	 var url = 'http://localhost:8989/geoserver/china/wfs?'+
+    	 var url = 'http://localhost:9000/geoserver/china/wfs?'+
          'service=WFS&request=GetFeature&'+
          'version=1.1.0&typename=china:wfst_test&'+ 
          'outputFormat=application%2Fjson';
@@ -92,7 +92,7 @@ var select = new ol.interaction.Select({
 var dirty = {};
 var formatWFS = new ol.format.WFS();
 var formatGML = new ol.format.GML({
-	 featureNS: 'http://localhost:8989/geoserver', //geoserver中工作组设置的命名空间，Required
+	 featureNS: 'http://localhost:9000/geoserver', //geoserver中工作区设置的命名空间，Required
      featurePrefix:'china', //Required
      featureType: 'wfst_test', //Required
      //srsName: 'EPSG:26910'
@@ -110,9 +110,10 @@ var transactWFS = function(p,f) {
 		break;
 	}
 	s = new XMLSerializer();
-	str = s.serializeToString(node);
+	str = s.serializeToString(node);//对xml文件进行处理
+	alert(node);
 	alert(str);
-	$.ajax('http://localhost:8989/geoserver/china/wfs',{
+	$.ajax('http://localhost:9000/geoserver/china/wfs',{
 		type: 'POST',
 		dataType: 'xml',
 		processData: false,

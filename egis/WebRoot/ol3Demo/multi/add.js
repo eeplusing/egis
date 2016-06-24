@@ -12,7 +12,7 @@ $('#popup-closer').on('click', function() {
 
 var sourceVector = new ol.source.Vector({
 	loader: function(extent) {
-		$.ajax('http://localhost:8989/geoserver/wfs',{
+		$.ajax('http://localhost:9000/geoserver/wfs',{
 			type: 'GET',
 			data: {
 				service: 'WFS',
@@ -72,7 +72,7 @@ var select = new ol.interaction.Select({
 var dirty = {};
 var formatWFS = new ol.format.WFS();
 var formatGML = new ol.format.GML({
-	featureNS: 'http://localhost:8989/geoserver',
+	featureNS: 'http://localhost:9000/geoserver',
 	featureType: 'china:wfst_test',
 	srsName: 'EPSG:26910'
 	});
@@ -90,7 +90,7 @@ var transactWFS = function(p,f) {
 	}
 	s = new XMLSerializer();
 	str = s.serializeToString(node);
-	$.ajax('http://localhost:8989/geoserver/wfs',{
+	$.ajax('http://localhost:9000/geoserver/wfs',{
 		type: 'POST',
 		dataType: 'xml',
 		processData: false,

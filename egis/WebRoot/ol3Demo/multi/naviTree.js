@@ -26,7 +26,7 @@ var pureCoverage = false;
       var untiled = new ol.layer.Image({
         source: new ol.source.ImageWMS({
 			ratio: 1,
-			url: 'http://localhost:8989/geoserver/china/wms',
+			url: 'http://localhost:9000/geoserver/china/wms',
 			params: {
 				'FORMAT': format,
 			    'VERSION': '1.1.1',  

@@ -16,7 +16,7 @@
     		  format: new ol.format.GeoJSON(),
               loader: function(extent, resolution, projection) {
             	  //在geoserver平台预览中，选中GeoJSON格式，复制产生的链接
-                  var url = 'http://localhost:8989/geoserver/china/wfs?'+
+                  var url = 'http://localhost:9000/geoserver/china/wfs?'+
                       'service=WFS&request=GetFeature&'+
                       'version=1.1.0&typename=china:wfst_test&'+ 
                       'outputFormat=application%2Fjson';
@@ -87,13 +87,13 @@
         var dirty = {};
         var formatWFS = new ol.format.WFS();
         var formatGML = new ol.format.GML({
-                featureNS: 'http://localhost:8989/geoserver', //Required
+                featureNS: 'http://localhost:9000/geoserver', //Required
                 featurePrefix:'china', //Required
                 featureType: 'wfst_test' //Required
                 //srsName: 'EPSG:2415'
         	});
         
-        var transactWFS = function(transType, features) {
+        var transactWFS = function(transType, f) {
         	switch(transType) {
         	case 'insert':
         		node = formatWFS.writeTransaction([f],null,null,formatGML);
@@ -107,7 +107,7 @@
         	}
         	s = new XMLSerializer();
         	str = s.serializeToString(node);
-        	var wfsUrl = 'http://localhost:8989/geoserver/china/ows?SERVICE=WFS';
+        	var wfsUrl = 'http://localhost:9000/geoserver/china/ows?SERVICE=WFS';
             var proxyUrl = wfsUrl;//GeoServer请求WFS服务时不能跨域，因此用一个代理转发,当前不存在跨域问题；   
         	$.ajax(proxyUrl,{
         		type: 'POST',
@@ -207,7 +207,7 @@
 	        		
 	        	case 'btnDrawPoly':
 	        		interaction = new ol.interaction.Draw({
-	        		    type: 'Polygon',
+	        		    type: 'MultiPolygon',
 	        		    source: layerVector.getSource()
 	        		});
 	        		map.addInteraction(interaction);
@@ -244,174 +244,6 @@
         	});
         
       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //*******************编辑Start***********************//*
-      /* //定义选择要素的交互
-        var select;
-        //定义修改交互
-        var modify;
-       
-        //开始编辑
-        var modifyInteraction = document.getElementById('btnEdit');
-        modifyInteraction.onclick = function modifyInteraction(){
-        	map.removeInteraction(select);
-        	map.removeInteraction(modify);
-        	select = new ol.interaction.Select({
-            	//响应双击事件condition缺省值是click
-            	//condition:ol.events.condition.doubleClick,
-                wrapX: false
-            });
-        	modify = new ol.interaction.Modify({
-            	//获取要修改的要素
-            	features: select.getFeatures()
-            });
-        	map.addInteraction(select);
-            map.addInteraction(modify);
-      	};
-      	
-      	 
-        //停止编辑
-        var stopModify = document.getElementById('stopOperate');
-        stopModify.onclick = function stopModify(){
-        	map.removeInteraction(selectModify);
-        	map.removeInteraction(modify);
-        };
-        
-        //编辑地图的交互
-        var interaction;
-        $('.btnMenu').on('click', function(event) {
-        	map.removeInteraction(interaction);
-        	select.getFeatures().clear();
-        	map.removeInteraction(select);
-        	switch($(this).attr('id')) {
-        	
-        	case 'btnSelect':
-        		interaction = new ol.interaction.Select({
-        			style: new ol.style.Style({
-        				stroke: new ol.style.Stroke({color: '#f50057', width: 2})
-        				})
-        		});
-        		map.addInteraction(interaction);
-        		interaction.getFeatures().on('add', function(e) {
-        			props = e.element.getProperties();
-        			if (props.status){$('#popup-status').html(props.status);}else{$('#popup-status').html('n/a');}
-        			if (props.tiendas){$('#popup-tiendas').html(props.tiendas);}else{$('#popup-tiendas').html('n/a');}
-        			coord = $('.ol-mouse-position').html().split(',');
-        			overlayPopup.setPosition(coord);
-        			});
-        		break;
-        		
-        	case 'btnEdit':
-        		map.addInteraction(select);
-        		interaction = new ol.interaction.Modify({
-        			features: select.getFeatures()
-        			});
-        		map.addInteraction(interaction);
-        		
-        		snap = new ol.interaction.Snap({
-        			source: layerVector.getSource()
-        			});
-        		map.addInteraction(snap);
-        		
-        		dirty = {};
-        		select.getFeatures().on('add', function(e) {
-        			e.element.on('change', function(e) {
-        				dirty[e.target.getId()] = true;
-        				});
-        			});
-        		select.getFeatures().on('remove', function(e) {
-        			f = e.element;
-        			if (dirty[f.getId()]){
-        				delete dirty[f.getId()];
-        				featureProperties = f.getProperties();
-        			    delete featureProperties.boundedBy;
-        			    var clone = new ol.Feature(featureProperties);
-        			    clone.setId(f.getId());
-        			    transactWFS('update',clone);
-        				}
-        			});
-        		break;
-        		
-        	case 'btnDrawPoint':
-        		interaction = new ol.interaction.Draw({
-        		    type: 'Point',
-        		    source: layerVector.getSource()
-        		});
-        		map.addInteraction(interaction);
-        		interaction.on('drawend', function(e) {
-        			transactWFS('insert',e.feature);
-        	    });
-        		break;
-        		
-        	case 'btnDrawLine':
-        		interaction = new ol.interaction.Draw({
-        		    type: 'LineString',
-        		    source: layerVector.getSource()
-        		});
-        		map.addInteraction(interaction);
-        		interaction.on('drawend', function(e) {
-        			transactWFS('insert',e.feature);
-        	    });
-        		break;
-        		
-        	case 'btnDrawPoly':
-        		interaction = new ol.interaction.Draw({
-        		    type: 'POLYGON',
-        		    source: layerVector.getSource()
-        		});
-        		map.addInteraction(interaction);
-        		interaction.on('drawend', function(e) {
-        			transactWFS('insert',e.feature);
-        	    });
-        		break;
-        		
-        	case 'btnDelete':
-        		interaction = new ol.interaction.Select();
-        		map.addInteraction(interaction);
-        		interaction.getFeatures().on('change:length', function(e) {
-        			transactWFS('delete',e.target.item(0));
-        	        interaction.getFeatures().clear();
-        	        selectPointerMove.getFeatures().clear();
-        	    });
-        		break;
-
-        	default:
-        		break;
-        	}
-        	});*/
       /*******************编辑End***********************/
 
       
@@ -425,52 +257,7 @@
      
      
       /*******************新增End***********************/
-      
-        
-       /*****向geoserver提交事务操作*****/ 
-      //使用WFS-T进行CUD
-      //args0:事务操作类型; args1:要操作的要素集合
-        /*function transact(transType, feat) {
-            var formatWFS = new ol.format.WFS();
-            var formatGML = new ol.format.GML({
-                featureNS: 'http://localhost:8989/geoserver', //Required
-                featurePrefix:'china', //Required
-                featureType: 'wfst_test' //Required
-                //srsName: 'EPSG:2415'
-            });
-
-            switch (transType) {
-                case 'insert':
-                    node = formatWFS.writeTransaction([feat], null, null, formatGML);
-                    break;
-                case 'update':
-                    node = formatWFS.writeTransaction(null, [feat], null, formatGML);
-                    break;
-                case 'delete':
-                    node = formatWFS.writeTransaction(null, null, [feat], formatGML);
-                    break;
-            }
-
-            s = new XMLSerializer();
-            str = s.serializeToString(node);
-            console.log(str);
-
-            var wfsUrl = "http://localhost:8989/geoserver/china/ows?SERVICE=WFS";
-            var proxyUrl = wfsUrl;//GeoServer请求WFS服务时不能跨域，因此用一个代理转发；   
-            $.ajax(proxyUrl, {
-                type: 'POST',
-                dataType: 'xml',
-                processData: false,
-                contentType: 'text/xml',
-                data: str
-            }).done();
-        }
-        */
-        
-      
-
-        
-      
+     
         
         
         

@@ -18,7 +18,7 @@ var pureCoverage = false;
     		  format: new ol.format.GeoJSON(),
               loader: function(extent, resolution, projection) {
             	  //在geoserver平台预览中，选中GeoJSON格式，复制产生的链接
-                  var url = 'http://localhost:8989/geoserver/china/wfs??'+
+                  var url = 'http://localhost:9000/geoserver/china/wfs??'+
                       'service=WFS&request=GetFeature&'+
                       'version=1.1.0&typename=china:provience&'+ 
                       'maxFeatures=50&outputFormat=application%2Fjson';

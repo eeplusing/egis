@@ -14,7 +14,7 @@
     		  format: new ol.format.GeoJSON(),
               loader: function(extent, resolution, projection) {
             	  //在geoserver平台预览中，选中GeoJSON格式，复制产生的链接
-                  var url = 'http://localhost:8989/geoserver/china/wfs??'+
+                  var url = 'http://localhost:9000/geoserver/china/wfs??'+
                       'service=WFS&request=GetFeature&'+
                       'version=1.1.0&typename=china:provience&'+ 
                       'maxFeatures=50&outputFormat=application%2Fjson';
@@ -37,7 +37,7 @@
       var tiled = new ol.layer.Tile({
     	  visible: true,
     	  source: new ol.source.TileWMS({
-    		  url: 'http://localhost:8989/geoserver/china/wms',
+    		  url: 'http://localhost:9000/geoserver/china/wms',
     		  params: {
     			  'FORMAT': format,
     			  'VERSION': '1.1.0',
