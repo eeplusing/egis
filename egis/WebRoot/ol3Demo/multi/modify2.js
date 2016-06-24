@@ -113,6 +113,7 @@ var transactWFS = function(p,f) {
 	str = s.serializeToString(node);//对xml文件进行处理
 	alert(node);
 	alert(str);
+	//$.ajax('http://localhost:9000/geoserver/china/wfs',{
 	$.ajax('http://localhost:9000/geoserver/china/wfs',{
 		type: 'POST',
 		dataType: 'xml',
