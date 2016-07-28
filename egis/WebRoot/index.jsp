@@ -21,6 +21,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    This is my JSP pagccce. <br>
+    This is my egis JSP page. <br>
   </body>
 </html>

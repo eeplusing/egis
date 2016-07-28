@@ -92,7 +92,7 @@ var select = new ol.interaction.Select({
 var dirty = {};
 var formatWFS = new ol.format.WFS();
 var formatGML = new ol.format.GML({
-	 featureNS: 'http://localhost:9000/geoserver', //geoserver中工作区设置的命名空间，Required
+	 featureNS: 'http://www.eplusing.com/china', //geoserver中工作区设置的命名空间，Required
      featurePrefix:'china', //Required
      featureType: 'wfst_test', //Required
      //srsName: 'EPSG:26910'
@@ -112,8 +112,10 @@ var transactWFS = function(p,f) {
 	s = new XMLSerializer();
 	str = s.serializeToString(node);//对xml文件进行处理
 	alert(str);
+	//out(str);
+	
+	//$.ajax('http://localhost:9000/geoserver/china/wfs',{
 	$.ajax('http://localhost:9000/geoserver/china/wfs',{
-	//$.ajax('http://localhost:9000/geoserver/china/ows?service=wfs',{
 		type: 'POST',
 		dataType: 'xml',
 		processData: false,
@@ -127,7 +129,7 @@ $('.btn-floating').hover(
 			$(this).addClass('darken-2');},
 		function() {
 			$(this).removeClass('darken-2');}
-		);
+);
 
 $('.btnMenu').on('click', function(event) {
 	$('.btnMenu').removeClass('orange');
@@ -213,7 +215,7 @@ $('.btnMenu').on('click', function(event) {
 			    source: layerVector.getSource()
 			});
 			map.addInteraction(interaction);
-			interaction.on('drawend', function(e) {
+			interaction.on('drawend', function(e){
 				transactWFS('insert',e.feature);
 		    });
 			break;
@@ -231,3 +233,118 @@ $('.btnMenu').on('click', function(event) {
 			break;
 	}
 });
+
+$('#btnZoomIn').on('click', function() {
+	var view = map.getView();
+	var newResolution = view.constrainResolution(view.getResolution(), 1);
+	view.setResolution(newResolution);
+	});
+
+$('#btnZoomOut').on('click', function() {
+	var view = map.getView();
+	var newResolution = view.constrainResolution(view.getResolution(), -1);
+	view.setResolution(newResolution);
+	});
+$('#btnTest').on('click', function() {
+	
+	var requestData = 
+		"<wfs:GetFeature service='WFS' version='2.0.0' " + 
+		"xmlns:hanzhong='http://www.eplusing.com/hanzhong' " +
+		"xmlns:wfs='http://www.opengis.net/wfs/2.0' " + 
+		"xmlns:fes='http://www.opengis.net/fes/2.0' " + 
+		//"xmlns='http://www.opengis.net/ogc' " + 
+		"xmlns:gml='http://www.opengis.net/gml/3.2' " + 
+		"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " + 
+		"xsi:schemaLocation='http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd' " + 
+		"outputFormat='application/json'> " + 
+		"<wfs:Query typeName='hanzhong:djq'> " + 
+		"<wfs:PropertyName>hanzhong:djqmc</wfs:PropertyName> " + 
+		"<fes:Filter> " + 
+		//" <ogc:FeatureId fid='wfst_test.1'/> " + 
+		"<fes:Intersects> " +
+		"<fes:ValueReference>hanzhong:geometry</fes:ValueReference> " +
+		 "<gml:Polygon srsName='http://www.opengis.net/gml/srs/epsg.xml#2360'> " +
+        "<gml:exterior> " +
+          "<gml:LinearRing> " +
+            "<gml:posList> " +
+              "399356.31634 3683270.82621 403402.94377 3681438.39115 405922.54198 3685179.61273 402563.07770 3684797.85543 399356.31634 3683270.82621" +
+            "</gml:posList> " +
+          "</gml:LinearRing> " +
+        "</gml:exterior> " +
+      "</gml:Polygon> " +
+		//"<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#2360'> " +
+		//"<gml:coordinates>414373.61072,3673259.92710</gml:coordinates> " +
+		//"</gml:Point> " + 
+		"</fes:Intersects> " +
+		"</fes:Filter> " +
+		"</wfs:Query>" + 
+		"</wfs:GetFeature>";
+/*	var requestData = 
+		"<wfs:GetFeature service='WFS' version='1.1.0' " + 
+		"xmlns:hanzhong='http://www.eplusing.com/hanzhong' " +
+		"xmlns:wfs='http://www.opengis.net/wfs' " + 
+		"xmlns='http://www.opengis.net/ogc' " + 
+		"xmlns:gml='http://www.opengis.net/gml' " + 
+		"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " + 
+		"xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd' " + 
+		"outputFormat='application/json'> " + 
+		"<wfs:Query typeName='hanzhong:djq'> " + 
+		"<wfs:PropertyName>hanzhong:djqmc</wfs:PropertyName> " + 
+		"<Filter> " + 
+		//" <ogc:FeatureId fid='wfst_test.1'/> " + 
+		"<Intersects> " +
+		"<PropertyName>geometry</PropertyName> " +
+		"<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#2360'> " +
+		"<gml:coordinates>414373.61072,3673259.92710</gml:coordinates> " +
+		"</gml:Point> " + 
+		"</Intersects> " +
+		"</Filter> " +
+		"</wfs:Query>" + 
+		"</wfs:GetFeature>";
+*//*	var requestData = 
+		"<wfs:GetFeature service='WFS' version='1.1.0' " + 
+		"xmlns:china='http://www.eplusing.com/china' " +
+		"xmlns:wfs='http://www.opengis.net/wfs' " + 
+		"xmlns='http://www.opengis.net/ogc' " + 
+		"xmlns:gml='http://www.opengis.net/gml' " + 
+		"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " + 
+		"xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd' " + 
+		"outputFormat='application/json'> " + 
+		"<wfs:Query typeName='china:wfst_test'> " + 
+		"<wfs:PropertyName>china:fid</wfs:PropertyName> " + 
+		"<Filter> " + 
+		//" <ogc:FeatureId fid='wfst_test.1'/> " + 
+		"<Intersects> " +
+		"<PropertyName>geometry</PropertyName> " +
+		"<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#26910'> " +
+		"<gml:coordinates>495141.61,5455815.3251</gml:coordinates> " +
+		"</gml:Point> " + 
+		"</Intersects> " +
+		"</Filter> " +
+		"</wfs:Query>" + 
+		"</wfs:GetFeature>";
+*/	$.ajax({ 
+			url:'http://localhost:9000/geoserver/wfs',
+			type: 'POST',
+			contentType: 'text/xml',
+			dataType: 'json',
+			processData: false,
+			data: requestData,
+			error: function(data){ //失败 
+				alert('Error loading document'); 
+				alert(data);
+			}, 
+			success: function(msg){ //成功 
+				
+				console.log(msg);
+				var a2 = msg.features;
+				console.log(msg.features[0].properties.fid);
+				//JSON.parse(jsonstr); //可以将json字符串转换成json对象 
+				//JSON.stringify(jsonobj); //可以将json对象转换成json对符串 
+				//alert( "return message: " + JSON.stringify(msg) ); 
+				//console.log( "return message: " + JSON.stringify(msg) );
+				console.log(JSON.stringify(msg));
+			} 
+	}); 
+});
+

@@ -92,7 +92,7 @@ var select = new ol.interaction.Select({
 var dirty = {};
 var formatWFS = new ol.format.WFS();
 var formatGML = new ol.format.GML({
-	 featureNS: 'http://localhost:9000/geoserver', //geoserver中工作区设置的命名空间，Required
+	 featureNS: 'http://www.eplusing.com/china', //geoserver中工作区设置的命名空间，Required
      featurePrefix:'china', //Required
      featureType: 'wfst_test', //Required
      //srsName: 'EPSG:26910'
@@ -111,8 +111,9 @@ var transactWFS = function(p,f) {
 	}
 	s = new XMLSerializer();
 	str = s.serializeToString(node);//对xml文件进行处理
-	alert(node);
 	alert(str);
+	//out(str);
+	
 	//$.ajax('http://localhost:9000/geoserver/china/wfs',{
 	$.ajax('http://localhost:9000/geoserver/china/wfs',{
 		type: 'POST',
@@ -128,7 +129,7 @@ $('.btn-floating').hover(
 			$(this).addClass('darken-2');},
 		function() {
 			$(this).removeClass('darken-2');}
-		);
+);
 
 $('.btnMenu').on('click', function(event) {
 	$('.btnMenu').removeClass('orange');
@@ -214,7 +215,7 @@ $('.btnMenu').on('click', function(event) {
 			    source: layerVector.getSource()
 			});
 			map.addInteraction(interaction);
-			interaction.on('drawend', function(e) {
+			interaction.on('drawend', function(e){
 				transactWFS('insert',e.feature);
 		    });
 			break;

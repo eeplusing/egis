@@ -1,0 +1,28 @@
+<Transaction xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+	<Update typeName="feature:wfst_test" xmlns:feature="http://localhost:9000/geoserver">
+	<Property>
+		<Name>geometry</Name>
+		<Value>
+			<MultiPolygon xmlns="http://www.opengis.net/gml">
+				<polygonMember>
+					<Polygon>
+						<exterior>
+							<LinearRing>
+								<posList>496608.98968469526 5462517.551811963 497133.90597851574 5461944.915855069 497439.31182219315 5461028.698324036 496723.5168760743 5461105.049784956 496084.07339087466 5460646.941019439 495120.1361967679 5461925.827989839 495091.5043989231 5462403.024620584 495788.2114798122 5462612.991138113 496608.98968469526 5462517.551811963</posList>
+							</LinearRing>
+						</exterior>
+					</Polygon>
+				</polygonMember>
+			</MultiPolygon>
+		</Value>
+	</Property>
+	<Property>
+		<Name>fid</Name>
+	</Property>
+	<Filter xmlns="http://www.opengis.net/ogc">
+		<FeatureId fid="wfst_test.1475"/>
+	</Filter>
+	</Update>
+</Transaction>
+
+"<Transaction xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"><Update typeName="feature:wfst_test" xmlns:feature="http://www.eplusing.com/china"><Property><Name>geometry</Name><Value><MultiPolygon xmlns="http://www.opengis.net/gml"><polygonMember><Polygon><exterior><LinearRing><posList>496532.63822377584 5461925.827989839 497696.99800279597 5462116.706642137 498193.28249877173 5461353.1920329435 498727.74272520724 5460284.271580073 497238.8892372798 5459158.087531513 496265.4081105581 5460093.392927774 494604.7638355623 5460971.434728347 494604.7638355623 5460971.434728347 496532.63822377584 5461925.827989839</posList></LinearRing></exterior></Polygon></polygonMember></MultiPolygon></Value></Property><Property><Name>fid</Name></Property><Filter xmlns="http://www.opengis.net/ogc"><FeatureId fid="wfst_test.1478"/></Filter></Update></Transaction>"

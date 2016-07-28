@@ -1,0 +1,9 @@
+<Transaction xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+	<Delete typeName="feature:wfst_test" xmlns:feature="http://localhost:9000/geoserver">
+		<Filter xmlns="http://www.opengis.net/ogc"><FeatureId fid="wfst_test.1477"/>
+		</Filter>
+	</Delete>
+</Transaction>
+
+
+"<Transaction xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"><Delete typeName="feature:wfst_test" xmlns:feature="http://www.eplusing.com/china"/></Transaction>"

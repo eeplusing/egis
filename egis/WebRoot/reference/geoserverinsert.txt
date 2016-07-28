@@ -1,0 +1,63 @@
+<Transaction xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+	<Insert>
+		<wfst_test xmlns="http://localhost:9000/geoserver">
+			<geometry>
+				<MultiPolygon xmlns="http://www.opengis.net/gml">
+					<polygonMember>
+						<Polygon>
+							<exterior>
+								<LinearRing>
+									<posList>496103.1612561045 5459692.547757948 498145.56283569714 5459444.40550996 497248.43316989474 5458222.78213525 495740.4918167376 5459177.175396742 496103.1612561045 5459692.547757948</posList>
+								</LinearRing>
+							</exterior>
+						</Polygon>
+					</polygonMember>
+				</MultiPolygon>
+			</geometry>
+		</wfst_test>
+	</Insert>
+</Transaction>
+
+
+
+"<Transaction xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+		<Insert>
+			<wfst_test xmlns="http://www.eplusing.com/china">
+				<geometry>
+					<MultiPolygon xmlns="http://www.opengis.net/gml">
+						<polygonMember>
+							<Polygon>
+								<exterior>
+									<LinearRing>
+										<posList>493478.5797870018 5462212.145968286 493325.8768651631 5461047.7861892665 491970.6384338446 5461448.631359093 492428.74719936075 5462078.5309116775 493478.5797870018 5462212.145968286</posList>
+									</LinearRing>
+								</exterior>
+							</Polygon>
+						</polygonMember>
+					</MultiPolygon>
+				</geometry>
+			</wfst_test>
+		</Insert>
+	</Transaction>"
+	
+	
+	
+	<Transaction xmlns='http://www.opengis.net/wfs' service='WFS' version='1.1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd'>
+		<Insert>
+			<djzq xmlns=http://www.eplusing.com/hanzhong>
+				<geometry>
+					<MultiPolygon xmlns='http://www.opengis.net/gml'>
+						<polygonMember>
+							<Polygon>
+								<exterior>
+									<LinearRing>
+										<posList>493478.5797870018 5462212.145968286 493325.8768651631 5461047.7861892665 491970.6384338446 5461448.631359093 492428.74719936075 5462078.5309116775 493478.5797870018 5462212.145968286</posList>
+									</LinearRing>
+								</exterior>
+							</Polygon>
+						</polygonMember>
+					</MultiPolygon>
+				</geometry>
+			</djzq>
+		</Insert>
+	</Transaction>

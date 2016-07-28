@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Persons>
+ <Person FullName="Bill Gates">
+ <Corporation>Microsoft</Corporation>
+ <Description>The largest software company</Description>
+ <Products>Windows series OS, SQL Server Database, XBox 360...</Products>
+ </Person>
+
+ <Person FullName="Jobs">
+ <Corporation>Apple</Corporation>
+ <Description>The famous software company</Description>
+ <Products>Macintosh, iPhone, iPod, iPad...</Products>
+ </Person>
+
+ <Person FullName="Larry Page">
+ <Corporation>Google</Corporation>
+ <Description>the largest search engine</Description>
+ <Products>Google search, Google Adsense, Gmail...</Products>
+ </Person>
+</Persons>
