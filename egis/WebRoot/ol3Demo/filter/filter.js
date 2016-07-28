@@ -246,40 +246,35 @@ $('#btnZoomOut').on('click', function() {
 	view.setResolution(newResolution);
 	});
 $('#btnTest').on('click', function() {
-	
+	/**
+	 * 以多边形是否相交查询
+	 * */
+	/*var requestData = 
+		"<wfs:GetFeature service='WFS' version='1.1.0' " + 
+		"xmlns:hanzhong='http://www.eplusing.com/hanzhong' " +
+		"xmlns:wfs='http://www.opengis.net/wfs' " + 
+		"xmlns='http://www.opengis.net/ogc' " + 
+		"xmlns:gml='http://www.opengis.net/gml' " + 
+		"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " + 
+		"xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd' " + 
+		"outputFormat='application/json'> " + 
+		"<wfs:Query typeName='hanzhong:djq'> " + 
+		"<wfs:PropertyName>hanzhong:djqmc</wfs:PropertyName> " + 
+		"<Filter> " + 
+			"<Intersects> " + 
+				"<PropertyName>geometry</PropertyName> " +
+				"<gml:Polygon srsName='http://www.opengis.net/gml/srs/epsg.xml#2360'> " +
+					"<gml:exterior> " +
+				     	"<gml:LinearRing> " +
+				     		"<gml:posList>402314.93545 3684110.69228 406476.09007 3682430.96014 403345.68017 3685523.19431 402314.93545 3684110.69228</gml:posList> " +
+				        "</gml:LinearRing> " +
+				    "</gml:exterior> " +
+			    "</gml:Polygon> " +
+			"</Intersects> " +
+		"</Filter> " +
+		"</wfs:Query>" + 
+		"</wfs:GetFeature>";*/
 	var requestData = 
-		"<wfs:GetFeature service='WFS' version='2.0.0' " + 
-		"xmlns:hanzhong='http://www.eplusing.com/hanzhong' " +
-		"xmlns:wfs='http://www.opengis.net/wfs/2.0' " + 
-		"xmlns:fes='http://www.opengis.net/fes/2.0' " + 
-		//"xmlns='http://www.opengis.net/ogc' " + 
-		"xmlns:gml='http://www.opengis.net/gml/3.2' " + 
-		"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " + 
-		"xsi:schemaLocation='http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd' " + 
-		"outputFormat='application/json'> " + 
-		"<wfs:Query typeName='hanzhong:djq'> " + 
-		"<wfs:PropertyName>hanzhong:djqmc</wfs:PropertyName> " + 
-		"<fes:Filter> " + 
-		//" <ogc:FeatureId fid='wfst_test.1'/> " + 
-		"<fes:Intersects> " +
-		"<fes:ValueReference>hanzhong:geometry</fes:ValueReference> " +
-		 "<gml:Polygon srsName='http://www.opengis.net/gml/srs/epsg.xml#2360'> " +
-        "<gml:exterior> " +
-          "<gml:LinearRing> " +
-            "<gml:posList> " +
-              "399356.31634 3683270.82621 403402.94377 3681438.39115 405922.54198 3685179.61273 402563.07770 3684797.85543 399356.31634 3683270.82621" +
-            "</gml:posList> " +
-          "</gml:LinearRing> " +
-        "</gml:exterior> " +
-      "</gml:Polygon> " +
-		//"<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#2360'> " +
-		//"<gml:coordinates>414373.61072,3673259.92710</gml:coordinates> " +
-		//"</gml:Point> " + 
-		"</fes:Intersects> " +
-		"</fes:Filter> " +
-		"</wfs:Query>" + 
-		"</wfs:GetFeature>";
-/*	var requestData = 
 		"<wfs:GetFeature service='WFS' version='1.1.0' " + 
 		"xmlns:hanzhong='http://www.eplusing.com/hanzhong' " +
 		"xmlns:wfs='http://www.opengis.net/wfs' " + 
@@ -289,41 +284,18 @@ $('#btnTest').on('click', function() {
 		"xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd' " + 
 		"outputFormat='application/json'> " + 
 		"<wfs:Query typeName='hanzhong:djq'> " + 
-		"<wfs:PropertyName>hanzhong:djqmc</wfs:PropertyName> " + 
-		"<Filter> " + 
-		//" <ogc:FeatureId fid='wfst_test.1'/> " + 
-		"<Intersects> " +
-		"<PropertyName>geometry</PropertyName> " +
-		"<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#2360'> " +
-		"<gml:coordinates>414373.61072,3673259.92710</gml:coordinates> " +
-		"</gml:Point> " + 
-		"</Intersects> " +
-		"</Filter> " +
+			"<wfs:PropertyName>hanzhong:djqmc</wfs:PropertyName> " + 
+			"<Filter> " + 
+				"<Intersects> " +
+					"<PropertyName>geometry</PropertyName> " +
+					"<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#2360'> " +
+						"<gml:coordinates>414373.61072,3673259.92710</gml:coordinates> " +
+					"</gml:Point> " + 
+				"</Intersects> " +
+			"</Filter> " +
 		"</wfs:Query>" + 
 		"</wfs:GetFeature>";
-*//*	var requestData = 
-		"<wfs:GetFeature service='WFS' version='1.1.0' " + 
-		"xmlns:china='http://www.eplusing.com/china' " +
-		"xmlns:wfs='http://www.opengis.net/wfs' " + 
-		"xmlns='http://www.opengis.net/ogc' " + 
-		"xmlns:gml='http://www.opengis.net/gml' " + 
-		"xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " + 
-		"xsi:schemaLocation='http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd' " + 
-		"outputFormat='application/json'> " + 
-		"<wfs:Query typeName='china:wfst_test'> " + 
-		"<wfs:PropertyName>china:fid</wfs:PropertyName> " + 
-		"<Filter> " + 
-		//" <ogc:FeatureId fid='wfst_test.1'/> " + 
-		"<Intersects> " +
-		"<PropertyName>geometry</PropertyName> " +
-		"<gml:Point srsName='http://www.opengis.net/gml/srs/epsg.xml#26910'> " +
-		"<gml:coordinates>495141.61,5455815.3251</gml:coordinates> " +
-		"</gml:Point> " + 
-		"</Intersects> " +
-		"</Filter> " +
-		"</wfs:Query>" + 
-		"</wfs:GetFeature>";
-*/	$.ajax({ 
+	$.ajax({ 
 			url:'http://localhost:9000/geoserver/wfs',
 			type: 'POST',
 			contentType: 'text/xml',
@@ -335,9 +307,7 @@ $('#btnTest').on('click', function() {
 				alert(data);
 			}, 
 			success: function(msg){ //成功 
-				
 				console.log(msg);
-				var a2 = msg.features;
 				console.log(msg.features[0].properties.fid);
 				//JSON.parse(jsonstr); //可以将json字符串转换成json对象 
 				//JSON.stringify(jsonobj); //可以将json对象转换成json对符串 
